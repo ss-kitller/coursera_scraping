@@ -1,0 +1,12 @@
+IBM Data Engineering
+Data Engineering Foundations
+DeepLearning.AI Data Engineering
+Introduction to Data Engineering
+Data Engineering on AWS - Foundations
+Meta Database Engineer
+Data Engineering, Big Data, and Machine Learning on GCP
+Python, Bash and SQL Essentials for Data Engineering
+Google Data Analytics
+Introduction to Data Engineering
+Applied Python Data Engineering
+IBM Data Warehouse Engineer
