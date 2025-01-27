@@ -5,8 +5,10 @@ import pandas as pd
 import os
 
 def scrolling ():
-    driver = webdriver.Chrome()  # Replace with your WebDriver
-    driver.get("https://www.coursera.org/search?query=data%20engineering&aid=true")
+    driver = webdriver.Chrome()
+    search_key = input("donner le mot que vous voulez chercher dans Coursera")
+    link = f'https://www.coursera.org/search?query={search_key}'
+    driver.get(link)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     # We wait 5 seconds so the page loads up
     time.sleep(10)
@@ -17,7 +19,7 @@ def scrolling ():
 
     return page_source
 
-    #lists i will append to
+    #lists I will append to
 response = scrolling()
 soup = BeautifulSoup(response, 'lxml')
 all_courses = []
@@ -123,7 +125,6 @@ with pd.ExcelWriter(file_name) as writer:
     df_skills.to_excel(writer, sheet_name="Data", index=False, startcol = 7)
 
 print("dataframe saved to excel successfully :) ")
-
 
 
 
