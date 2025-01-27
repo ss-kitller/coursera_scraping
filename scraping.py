@@ -9,9 +9,17 @@ def scrolling ():
     search_key = input("donner le mot que vous voulez chercher dans Coursera")
     link = f'https://www.coursera.org/search?query={search_key}'
     driver.get(link)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    # We wait 5 seconds so the page loads up
-    time.sleep(10)
+
+        # à fixer ces valeurs en prenons en considération la vitesse de chargement des élements de la page
+    scroll_pause_time = 0.5  # Time to wait between scrolls
+    scroll_duration = 20  # Total scroll duration
+    scroll_amount = 500  # Pixels to scroll each time
+
+
+    start_time = time.time()
+    while time.time() - start_time < scroll_duration:
+        driver.execute_script(f"window.scrollBy(0, {scroll_amount});")
+        time.sleep(scroll_pause_time)
 
         # Get the page source after scrolling
     page_source = driver.page_source
@@ -22,6 +30,9 @@ def scrolling ():
     #lists I will append to
 response = scrolling()
 soup = BeautifulSoup(response, 'lxml')
+
+
+
 all_courses = []
 all_names = []
 all_levels = []
