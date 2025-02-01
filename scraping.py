@@ -6,7 +6,7 @@ import os
 
 def scrolling ():
     driver = webdriver.Chrome()
-    search_key = input("donner le mot que vous voulez chercher dans Coursera")
+    search_key = input("donner le mot que vous voulez chercher dans Coursera ")
     link = f'https://www.coursera.org/search?query={search_key}'
     driver.get(link)
 
@@ -23,6 +23,7 @@ def scrolling ():
 
         # Get the page source after scrolling
     page_source = driver.page_source
+    time.sleep(10)
     driver.quit()
 
     return page_source
@@ -104,39 +105,36 @@ for outer_div_1 in outer_div:
             all_skills.append(temp_list)
 
 
-
-
-
-    ## ECRITURE DES NOMS DES ENTREPRISES DANS UN TABLEAU
-df_courses = pd.DataFrame(all_courses, columns=["Course name"])
-df_certifiers = pd.DataFrame(all_names, columns=["Nom du certificateur"])
-
-df_level = pd.DataFrame(all_levels, columns = ["level de la certif"])
-df_certif_type = pd.DataFrame(all_certif_type, columns=["type de certificat"])
-df_duration = pd.DataFrame(all_duration, columns=["durée de la certification"])
-
-
-df_ratings = pd.DataFrame(all_ratings, columns=["Rating de la certification"])
-df_skills = pd.DataFrame(all_skills, columns=["Compétences"])
-
+    # Making the arrays the same length
+min_length = min(len(all_courses),len(all_ratings), len(all_skills), len(all_levels), len(all_certif_type), len(all_duration), len(all_names))
+all_courses = all_courses [:min_length]
+all_names =  all_names[:min_length]
+all_levels = all_levels[:min_length]
+all_certif_type = all_certif_type[:min_length]
+all_duration = all_duration[:min_length]
+all_ratings = all_ratings[:min_length]
+all_skills = all_skills[:min_length]
 
 
     # ENREGISTREMENT SUR UN FICHIER EXCEL
-file_name = "table.xlsx"
+file_name = "table.csv"
 if os.path.exists(file_name):
     os.remove(file_name)
 
-with pd.ExcelWriter(file_name) as writer:
-    df_courses.to_excel(writer, sheet_name="Data", index=False, startcol = 1)
-    df_certifiers.to_excel(writer, sheet_name="Data", index=False, startcol = 2)
-    df_certif_type.to_excel(writer, sheet_name="Data", index=False, startcol = 3)
-    df_level.to_excel(writer, sheet_name="Data", index=False, startcol = 4)
-    df_duration.to_excel(writer, sheet_name="Data", index=False, startcol = 5)
-    df_ratings.to_excel(writer, sheet_name="Data", index=False, startcol = 6)
-    df_skills.to_excel(writer, sheet_name="Data", index=False, startcol = 7)
+df = pd.DataFrame({
+    "Course Name": all_courses,
+    "Certificate Provider": all_names,
+    "Certification Level": all_levels,
+    "Certification Type": all_certif_type,
+    "Duration": all_duration,
+    "Certification Rating": all_ratings,
+    "Skills": all_skills
+})
 
-print("dataframe saved to excel successfully :) ")
+# Save to CSV file
+df.to_csv(file_name, index=False, encoding="utf-8")
 
+print("dataframe saved successfully :) ")
 
 
 
