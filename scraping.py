@@ -23,7 +23,7 @@ def scrolling ():
 
         # Get the page source after scrolling
     page_source = driver.page_source
-    time.sleep(10)
+    #time.sleep(10)
     driver.quit()
 
     return page_source
@@ -82,14 +82,22 @@ for outer_div_1 in outer_div:
 
 
             # Ratings sur la certif
-        ratings = j.find('div', class_="cds-RatingStat-sizeLabel css-1i7bybc")
+        ratings = j.find('div', class_="cds-CommonCard-ratings")
         if ratings:
-            result = ratings.find('span',class_="css-6ecy9b")
-        elif result :
-            all_ratings.append(result.text)
+            # Locate the nested div with class="cds-RatingStat-meter"
+            result = ratings.find('div', class_="cds-RatingStat-meter")
+            if result:
+                # Extract the aria-valuetext attribute
+                aria_value_text = result.get('aria-valuetext')
+                if aria_value_text:
+                    print('aria-valuetext:', aria_value_text)
+                    all_ratings.append(aria_value_text)
+                else:
+                        print("aria-valuetext attribute not found!")
+            else:
+                print("Inner div with class 'cds-RatingStat-meter' not found!")
         else:
-            all_ratings.append("no information :/")
-
+            print("Outer div with class 'cds-CommonCard-ratings' not found!")
 
 
             # Skills que la certif guarantit
